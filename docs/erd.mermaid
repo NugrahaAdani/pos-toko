@@ -1,0 +1,60 @@
+erDiagram
+    USERS {
+        bigint id PK
+        string name
+        string email UK
+        enum role "admin atau kasir; default kasir"
+        timestamp email_verified_at "nullable"
+        string password
+        string remember_token "nullable"
+        timestamp created_at "nullable"
+        timestamp updated_at "nullable"
+    }
+
+    CATEGORIES {
+        bigint id PK
+        string name
+        text description "nullable"
+        timestamp created_at "nullable"
+        timestamp updated_at "nullable"
+    }
+
+    PRODUCTS {
+        bigint id PK
+        bigint category_id FK
+        string code UK
+        string name
+        string unit "default pcs"
+        unsigned_bigint price
+        unsigned_int stock "default 0"
+        string image "nullable"
+        timestamp created_at "nullable"
+        timestamp updated_at "nullable"
+    }
+
+    TRANSACTIONS {
+        bigint id PK
+        string invoice_number UK
+        bigint user_id FK
+        unsigned_bigint total
+        unsigned_bigint pay
+        unsigned_bigint change
+        timestamp created_at "nullable"
+        timestamp updated_at "nullable"
+    }
+
+    TRANSACTION_DETAILS {
+        bigint id PK
+        bigint transaction_id FK
+        bigint product_id FK
+        unsigned_int qty
+        unsigned_bigint price
+        unsigned_bigint subtotal
+        timestamp created_at "nullable"
+        timestamp updated_at "nullable"
+    }
+
+    USERS ||--o{ TRANSACTIONS : "membuat"
+    CATEGORIES ||--o{ PRODUCTS : "mengelompokkan"
+    TRANSACTIONS ||--o{ TRANSACTION_DETAILS : "memiliki"
+    PRODUCTS ||--o{ TRANSACTION_DETAILS : "dirujuk"
